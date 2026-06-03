@@ -55,10 +55,11 @@ function adicionarProduto() {
   //FUNÇÂO PARA ADICIONAR PRODUTO
   rl.question("\nQual produto deseja cadastrar?", (produtoNovo) => {
     console.log("\nVocê digitou", produtoNovo);
+    const produtoPadronizado = padronizarNome(produtoNovo);
 
     let produtoExistente = false;
     for (let i = 0; i < estoque.length; i++) {
-      if (estoque[i].nome === produtoNovo) {
+      if (estoque[i].nome === produtoPadronizado) {
         produtoExistente = true;
         break;
       }
@@ -79,13 +80,13 @@ function adicionarProduto() {
             return;
           }
           const produto = {
-            nome: produtoNovo,
+            nome: produtoPadronizado,
             quantidade: quantidadeNovaNumero,
           };
           estoque.push(produto);
 
           console.log(
-            `Produto adicionado: ${produtoNovo} quantidade: ${quantidadeNova}`,
+            `Produto adicionado: ${produtoPadronizado} quantidade: ${quantidadeNova}`,
           );
 
           console.log("\nEstoque atualizado:");
@@ -103,8 +104,10 @@ function removerProduto() {
   rl.question("Qual produto você deseja remover?", (remover) => {
     let encontrado = false;
 
+    const produtoPadronizado = padronizarNome(remover);
+
     for (let i = 0; i < estoque.length; i++) {
-      if (estoque[i].nome === remover) {
+      if (estoque[i].nome === produtoPadronizado) {
         const produtoRemovido = estoque.splice(i, 1);
         encontrado = true;
         console.log("Item", produtoRemovido[0].nome, "removido!");
@@ -129,8 +132,10 @@ function atualizarProduto() {
   rl.question("Qual produto deseja atualizar?", (produtoAtualizar) => {
     let encontrado = false;
 
+    const produtoPadronizado = padronizarNome(produtoAtualizar);
+
     for (let i = 0; i < estoque.length; i++) {
-      if (estoque[i].nome === produtoAtualizar) {
+      if (estoque[i].nome === produtoPadronizado) {
         encontrado = true;
 
         rl.question("Qual a nova quantidade?", (quantidadeNova) => {
@@ -163,4 +168,10 @@ function atualizarProduto() {
       menu();
     }
   });
+}
+
+function padronizarNome(nome) {
+  const nomeMinusculo = nome.trim();
+  const nomePadrao = nomeMinusculo.toLowerCase();
+  return nomePadrao;
 }
