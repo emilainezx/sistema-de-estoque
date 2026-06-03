@@ -5,31 +5,18 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-let produtos = [];
-let quantidades = [];
+let estoque = [];
 
 function mostrarEstoque () {//FUNÇÂO PARA MOSTRAR ESTOQUE
-    let total = 0;
-    let menorQuantidade = quantidades[0];
-    let menorProduto = produtos[0];
 
-    console.log("\n=== ESTOQUE ===");
+    console.log("\n === ESTOQUE ===");
 
-    for (let i = 0; i < quantidades.length; i++) {
-    total += quantidades[i];
-    console.log(`${produtos[i]} quantidade: ${quantidades[i]}`);
-
-    if (quantidades[i] < menorQuantidade) {
-        menorQuantidade = quantidades[i];
-        menorProduto = produtos[i];
-    }
+    for (let i = 0; i < estoque.length; i++) {
+    console.log(`Nome: ${estoque[i].nome} Quantidade: ${estoque[i].quantidade}`);
     }
     
-    console.log("total de itens no estoque:", total);
-    console.log(
-      `Item com menor estoque: ${menorProduto} quantidade: ${menorQuantidade}`,
-    );
 }
+
 console.log("\nSISTEMA DE ESTOQUE");
 menu();
 
@@ -59,11 +46,11 @@ function menu() {//FUNÇÂO DO MENU
 }
 
 function adicionarProduto () {//FUNÇÂO PARA ADICIONAR PRODUTO
-rl.question("Qual produto deseja cadastrar?", (produtoNovo) => {
-  console.log("Você digitou", produtoNovo);
+rl.question("\nQual produto deseja cadastrar?", (produtoNovo) => {
+  console.log("\nVocê digitou", produtoNovo);
 
-  rl.question("Qual a quantidade que tem desse produto?", (quantidadeNova) => {
-    console.log("Você digitou:", quantidadeNova);
+  rl.question("\nQual a quantidade que tem desse produto?", (quantidadeNova) => {
+    console.log("\nVocê digitou:", quantidadeNova);
     const quantidadeNovaNumero = Number(quantidadeNova);
 
 
@@ -72,8 +59,11 @@ rl.question("Qual produto deseja cadastrar?", (produtoNovo) => {
       menu();
       return
     }
-      produtos.push(produtoNovo);
-      quantidades.push(quantidadeNovaNumero);
+    const produto = {
+        nome: (produtoNovo),
+        quantidade: (quantidadeNovaNumero)
+    }
+    estoque.push(produto);
 
     console.log(
       `Produto adicionado: ${produtoNovo} quantidade: ${quantidadeNova}`,
@@ -92,12 +82,11 @@ function removerProduto (){
   rl.question("Qual produto você deseja remover?", (remover) =>{
     let encontrado = false;
 
-    for(let i = 0; i < quantidades.length; i++ ) {
-      if (produtos[i] === remover ) {
-        const produtoRemovido = produtos.splice(i, 1);
-        quantidades.splice(i, 1);
+    for(let i = 0; i < estoque.length; i++ ) {
+      if (estoque[i].nome === remover ) {
+        const produtoRemovido = estoque.splice(i, 1);
         encontrado = true
-        console.log(`Item ${produtoRemovido} removido`);
+        console.log("Item", produtoRemovido[0].nome, "removido!");
         mostrarEstoque();
         menu();
         break;
