@@ -5,8 +5,8 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-let produtos = ["Arroz", "Feijão", "Macarrão"];
-let quantidades = [10, 5, 2];
+let produtos = [];
+let quantidades = [];
 
 function mostrarEstoque () {//FUNÇÂO PARA MOSTRAR ESTOQUE
     let total = 0;
@@ -61,16 +61,26 @@ function menu() {//FUNÇÂO DO MENU
 function adicionarProduto () {//FUNÇÂO PARA ADICIONAR PRODUTO
 rl.question("Qual produto deseja cadastrar?", (produtoNovo) => {
   console.log("Você digitou", produtoNovo);
-  produtos.push(produtoNovo);
 
   rl.question("Qual a quantidade que tem desse produto?", (quantidadeNova) => {
     console.log("Você digitou:", quantidadeNova);
     const quantidadeNovaNumero = Number(quantidadeNova);
-    quantidades.push(quantidadeNovaNumero);
+
+
+    if (isNaN(quantidadeNovaNumero)) {
+      console.log("Erro. digite um número!")
+      menu();
+      return
+    }
+      produtos.push(produtoNovo);
+      quantidades.push(quantidadeNovaNumero);
+
     console.log(
       `Produto adicionado: ${produtoNovo} quantidade: ${quantidadeNova}`,
     );
+
     console.log("\nEstoque atualizado:");
+
     mostrarEstoque();
     menu();
   });
