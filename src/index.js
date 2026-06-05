@@ -72,21 +72,29 @@ function adicionarProduto() {
         "\nQual a quantidade que tem desse produto?",
         (quantidadeNova) => {
           console.log("\nVocê digitou:", quantidadeNova);
-          const quantidadeNovaNumero = Number(quantidadeNova);
+          const quantidadeNovoNumero = Number(quantidadeNova);
 
-          if (isNaN(quantidadeNovaNumero)) {
+          if (isNaN(quantidadeNovoNumero)) {
             console.log("Erro. digite um número!");
             menu();
             return;
           }
+          const quantidadeValida = validarQuantidade(quantidadeNovoNumero);
+
+          if(quantidadeValida == false) {
+            console.log("Quantidade deve ser um número inteiro maior ou igual a zero.");
+            menu();
+            return;
+          }
+
           const produto = {
             nome: produtoPadronizado,
-            quantidade: quantidadeNovaNumero,
+            quantidade: quantidadeNovoNumero,
           };
           estoque.push(produto);
 
           console.log(
-            `Produto adicionado: ${produtoPadronizado} quantidade: ${quantidadeNova}`,
+            `Produto adicionado: ${produtoPadronizado} quantidade: ${quantidadeNovoNumero}`,
           );
 
           console.log("\nEstoque atualizado:");
@@ -127,6 +135,7 @@ function removerProduto() {
 }
 
 function atualizarProduto() {
+
   mostrarEstoque();
 
   rl.question("Qual produto deseja atualizar?", (produtoAtualizar) => {
@@ -135,39 +144,42 @@ function atualizarProduto() {
     const produtoPadronizado = padronizarNome(produtoAtualizar);
 
     for (let i = 0; i < estoque.length; i++) {
+
       if (estoque[i].nome === produtoPadronizado) {
         encontrado = true;
-
         rl.question("Qual a nova quantidade?", (quantidadeNova) => {
           const quantidadeNovaNumero = Number(quantidadeNova);
 
           if (isNaN(quantidadeNovaNumero)) {
             console.log("Quantidade informada não é um número");
             menu();
-          } else {
-            estoque[i].quantidade = quantidadeNovaNumero;
-            console.log(
-              "Item:",
-              estoque[i].nome,
-              "alterado para a quantidade:",
-              estoque[i].quantidade,
-              "com sucesso!",
-            );
-
-            mostrarEstoque();
-
-            menu();
+            return;
           }
-        });
 
-        break;
-      }
+        const quantidadeValida = validarQuantidade(quantidadeNovaNumero);
+
+        if(!quantidadeValida) {
+            console.log("Quantidade deve ser um número inteiro maior ou igual a zero.");
+            menu();
+            return;
+        }
+        estoque[i].quantidade = quantidadeNovaNumero;
+
+        console.log("Item:", estoque[i].nome,"alterado para a quantidade:", estoque[i].quantidade,"com sucesso!");
+
+        mostrarEstoque();
+
+        menu();
+  
+        })
+        }
+
     }
     if (!encontrado) {
       console.log("Produto não encontrado");
       menu();
     }
-  });
+    });
 }
 
 function padronizarNome(nome) {
@@ -175,3 +187,14 @@ function padronizarNome(nome) {
   const nomePadrao = nomeMinusculo.toLowerCase();
   return nomePadrao;
 }
+
+function validarQuantidade(quantidade) {
+  if (quantidade < 0){
+    return false
+  } 
+    if(Number.isInteger(quantidade)  === false) {
+      return false
+    }
+      return true
+  }
+
