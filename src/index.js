@@ -1,3 +1,7 @@
+// ================================
+// CONFIGURAÇÕES
+// ================================
+
 const readline = require("readline");
 
 const rl = readline.createInterface({
@@ -5,7 +9,35 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
+// ================================
+// DADOS DA APLICAÇÃO
+// ================================
+
 let estoque = [];
+
+// ================================
+// FUNÇÕES AUXILIARES
+// ================================
+
+function padronizarNome(nome) {
+  const nomeMinusculo = nome.trim();
+  const nomePadrao = nomeMinusculo.toLowerCase();
+  return nomePadrao;
+}
+
+function validarQuantidade(quantidade) {
+  if (quantidade < 0){
+    return false
+  } 
+    if(Number.isInteger(quantidade)  === false) {
+      return false
+    }
+      return true
+  }
+
+// ================================
+// FUNÇÕES DE VISUALIZAÇÃO
+// ================================
 
 function mostrarEstoque() {
   //FUNÇÂO PARA MOSTRAR ESTOQUE
@@ -18,38 +50,9 @@ function mostrarEstoque() {
     );
   }
 }
-
-console.log("\nSISTEMA DE ESTOQUE");
-menu();
-
-function menu() {
-  //FUNÇÂO DO MENU
-  console.log("\nMENU");
-  console.log("1 - Mostrar estoque");
-  console.log("2 - Adicionar produto");
-  console.log("3 - Remover produto");
-  console.log("4 - Atualizar produto");
-  console.log("5 - Sair");
-
-  rl.question("Qual opção? ", (opcao) => {
-    console.log("Você digitou:", opcao);
-    if (opcao == 1) {
-      mostrarEstoque();
-      menu();
-    } else if (opcao == 2) {
-      adicionarProduto();
-    } else if (opcao == 3) {
-      removerProduto();
-    } else if (opcao == 4) {
-      atualizarProduto();
-    } else if (opcao == 5) {
-      rl.close();
-    } else {
-      console.log("Escolha uma das 5 opções");
-      menu();
-    }
-  });
-}
+// ================================
+// FUNÇÕES DE ESTOQUE
+// ================================
 
 function adicionarProduto() {
   //FUNÇÂO PARA ADICIONAR PRODUTO
@@ -72,14 +75,14 @@ function adicionarProduto() {
         "\nQual a quantidade que tem desse produto?",
         (quantidadeNova) => {
           console.log("\nVocê digitou:", quantidadeNova);
-          const quantidadeNovoNumero = Number(quantidadeNova);
+          const quantidadeNovaNumero = Number(quantidadeNova);
 
-          if (isNaN(quantidadeNovoNumero)) {
+          if (isNaN(quantidadeNovaNumero)) {
             console.log("Erro. digite um número!");
             menu();
             return;
           }
-          const quantidadeValida = validarQuantidade(quantidadeNovoNumero);
+          const quantidadeValida = validarQuantidade(quantidadeNovaNumero);
 
           if(quantidadeValida == false) {
             console.log("Quantidade deve ser um número inteiro maior ou igual a zero.");
@@ -89,12 +92,12 @@ function adicionarProduto() {
 
           const produto = {
             nome: produtoPadronizado,
-            quantidade: quantidadeNovoNumero,
+            quantidade: quantidadeNovaNumero,
           };
           estoque.push(produto);
 
           console.log(
-            `Produto adicionado: ${produtoPadronizado} quantidade: ${quantidadeNovoNumero}`,
+            `Produto adicionado: ${produtoPadronizado} quantidade: ${quantidadeNovaNumero}`,
           );
 
           console.log("\nEstoque atualizado:");
@@ -182,19 +185,42 @@ function atualizarProduto() {
     });
 }
 
-function padronizarNome(nome) {
-  const nomeMinusculo = nome.trim();
-  const nomePadrao = nomeMinusculo.toLowerCase();
-  return nomePadrao;
+// ================================
+// MENU
+// ================================
+
+function menu() {
+  //FUNÇÂO DO MENU
+  console.log("\nMENU");
+  console.log("1 - Mostrar estoque");
+  console.log("2 - Adicionar produto");
+  console.log("3 - Remover produto");
+  console.log("4 - Atualizar produto");
+  console.log("5 - Sair");
+
+  rl.question("Qual opção? ", (opcao) => {
+    console.log("Você digitou:", opcao);
+    if (opcao == 1) {
+      mostrarEstoque();
+      menu();
+    } else if (opcao == 2) {
+      adicionarProduto();
+    } else if (opcao == 3) {
+      removerProduto();
+    } else if (opcao == 4) {
+      atualizarProduto();
+    } else if (opcao == 5) {
+      rl.close();
+    } else {
+      console.log("Escolha uma das 5 opções");
+      menu();
+    }
+  });
 }
 
-function validarQuantidade(quantidade) {
-  if (quantidade < 0){
-    return false
-  } 
-    if(Number.isInteger(quantidade)  === false) {
-      return false
-    }
-      return true
-  }
+// ================================
+// INICIALIZAÇÃO DO PROGRAMA
+// ================================
 
+console.log("\nSISTEMA DE ESTOQUE");
+menu();
