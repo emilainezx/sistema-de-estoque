@@ -26,21 +26,25 @@ function padronizarNome(nome) {
 }
 
 function validarQuantidade(quantidade) {
-  if (quantidade < 0){
-    return false
-  } 
-    if(Number.isInteger(quantidade)  === false) {
-      return false
-    }
-      return true
+  if (quantidade < 0) {
+    return false;
   }
+  if (Number.isInteger(quantidade) === false) {
+    return false;
+  }
+  return true;
+}
 
 // ================================
 // FUNÇÕES DE VISUALIZAÇÃO
 // ================================
 
 function mostrarEstoque() {
-  //FUNÇÂO PARA MOSTRAR ESTOQUE
+    
+  if (estoque.length === 0) {
+    console.log("Estoque vazio!");
+    return;
+  }
 
   console.log("\n === ESTOQUE ===");
 
@@ -55,7 +59,6 @@ function mostrarEstoque() {
 // ================================
 
 function adicionarProduto() {
-  //FUNÇÂO PARA ADICIONAR PRODUTO
   rl.question("\nQual produto deseja cadastrar?", (produtoNovo) => {
     console.log("\nVocê digitou", produtoNovo);
     const produtoPadronizado = padronizarNome(produtoNovo);
@@ -84,8 +87,10 @@ function adicionarProduto() {
           }
           const quantidadeValida = validarQuantidade(quantidadeNovaNumero);
 
-          if(quantidadeValida == false) {
-            console.log("Quantidade deve ser um número inteiro maior ou igual a zero.");
+          if (!quantidadeValida) {
+            console.log(
+              "Quantidade deve ser um número inteiro maior ou igual a zero.",
+            );
             menu();
             return;
           }
@@ -111,6 +116,13 @@ function adicionarProduto() {
 }
 
 function removerProduto() {
+
+    if (estoque.length === 0) {
+    console.log("Estoque vazio!");
+    menu();
+    return;
+  }
+
   mostrarEstoque();
   rl.question("Qual produto você deseja remover?", (remover) => {
     let encontrado = false;
@@ -139,6 +151,12 @@ function removerProduto() {
 
 function atualizarProduto() {
 
+  if (estoque.length === 0) {
+  console.log("Estoque vazio!");
+  menu();
+  return;
+}
+
   mostrarEstoque();
 
   rl.question("Qual produto deseja atualizar?", (produtoAtualizar) => {
@@ -147,7 +165,6 @@ function atualizarProduto() {
     const produtoPadronizado = padronizarNome(produtoAtualizar);
 
     for (let i = 0; i < estoque.length; i++) {
-
       if (estoque[i].nome === produtoPadronizado) {
         encontrado = true;
         rl.question("Qual a nova quantidade?", (quantidadeNova) => {
@@ -159,30 +176,36 @@ function atualizarProduto() {
             return;
           }
 
-        const quantidadeValida = validarQuantidade(quantidadeNovaNumero);
+          const quantidadeValida = validarQuantidade(quantidadeNovaNumero);
 
-        if(!quantidadeValida) {
-            console.log("Quantidade deve ser um número inteiro maior ou igual a zero.");
+          if (!quantidadeValida) {
+            console.log(
+              "Quantidade deve ser um número inteiro maior ou igual a zero.",
+            );
             menu();
             return;
-        }
-        estoque[i].quantidade = quantidadeNovaNumero;
+          }
+          estoque[i].quantidade = quantidadeNovaNumero;
 
-        console.log("Item:", estoque[i].nome,"alterado para a quantidade:", estoque[i].quantidade,"com sucesso!");
+          console.log(
+            "Item:",
+            estoque[i].nome,
+            "alterado para a quantidade:",
+            estoque[i].quantidade,
+            "com sucesso!",
+          );
 
-        mostrarEstoque();
+          mostrarEstoque();
 
-        menu();
-  
-        })
-        }
-
+          menu();
+        });
+      }
     }
     if (!encontrado) {
       console.log("Produto não encontrado");
       menu();
     }
-    });
+  });
 }
 
 // ================================
@@ -190,8 +213,7 @@ function atualizarProduto() {
 // ================================
 
 function menu() {
-  //FUNÇÂO DO MENU
-  console.log("\nMENU");
+  console.log("\n === MENU ===");
   console.log("1 - Mostrar estoque");
   console.log("2 - Adicionar produto");
   console.log("3 - Remover produto");
@@ -199,7 +221,7 @@ function menu() {
   console.log("5 - Sair");
 
   rl.question("Qual opção? ", (opcao) => {
-    console.log("Você digitou:", opcao);
+    console.log("\nVocê digitou:", opcao);
     if (opcao == 1) {
       mostrarEstoque();
       menu();
