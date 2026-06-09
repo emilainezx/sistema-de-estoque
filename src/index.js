@@ -35,6 +35,19 @@ function validarQuantidade(quantidade) {
   return true;
 }
 
+function validarNomeProduto(nome) {
+  if (nome.trim() === "") {
+    console.log("O nome do produto não pode estar vazio.");
+    return false;
+  }
+
+  if (!isNaN(nome[0])) {
+    console.log("O nome do produto não pode começar com número.");
+    return false;
+  }
+  
+  return true;
+}
 // ================================
 // FUNÇÕES DE VISUALIZAÇÃO
 // ================================
@@ -63,6 +76,12 @@ function adicionarProduto() {
     console.log("\nVocê digitou", produtoNovo);
     const produtoPadronizado = padronizarNome(produtoNovo);
 
+    const nomeValido = validarNomeProduto(produtoPadronizado);
+    if (!nomeValido) {
+      menu();
+      return;
+  }
+  
     let produtoExistente = false;
     for (let i = 0; i < estoque.length; i++) {
       if (estoque[i].nome === produtoPadronizado) {
