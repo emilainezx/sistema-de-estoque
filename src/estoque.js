@@ -5,22 +5,33 @@ import {
   validarQuantidade,
 } from "./helpers.js";
 import chalk from "chalk";
+import Table from 'cli-table3';
 
 let estoque = [];
 
+
 function mostrarEstoque() {
+
   if (estoque.length === 0) {
     console.log(chalk.yellow("Estoque vazio!"));
     return;
   }
 
+    const table = new Table({
+    head: ['Produto', 'Quantidade']
+  , colWidths: [20, 15]
+});
+
   console.log(chalk.blue(" === ESTOQUE ==="));
 
   for (let i = 0; i < estoque.length; i++) {
-    console.log(
-      `Produto: ${chalk.green(estoque[i].nome)} Quantidade: ${chalk.yellow(estoque[i].quantidade)}`,
-    );
-  }
+  table.push(
+      [chalk.green(estoque[i].nome), chalk.yellow(estoque[i].quantidade)]
+    
+);
+}
+  console.log(table.toString());
+
 }
 
 function adicionarProduto(voltarMenu) {
