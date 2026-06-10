@@ -11,20 +11,32 @@ export function menu() {
 
   rl.question("Qual opção? ", (opcao) => {
     console.log("\nVocê digitou:", opcao);
-    if (opcao == 1) {
-      mostrarEstoque();
-      menu();
-    } else if (opcao == 2) {
-      adicionarProduto(menu);
-    } else if (opcao == 3) {
-      removerProduto(menu);
-    } else if (opcao == 4) {
-      atualizarProduto(menu);
-    } else if (opcao == 5) {
-      rl.close();
-    } else {
-      console.log("Escolha uma das 5 opções");
-      menu();
+    switch (opcao) {
+      case "1": {
+        mostrarEstoque();
+        menu();
+        break;
+      }
+      case "2": {
+        adicionarProduto(menu);
+        break;
+      }
+      case "3": {
+        removerProduto(menu);
+        break;
+      }
+      case "4": {
+        atualizarProduto(menu);
+        break;
+      }
+      case "5": {
+        rl.close();
+        break;
+      } 
+      default: {
+        console.log("Escolha uma das 5 opções");
+        menu();
+      }
     }
   });
 }
