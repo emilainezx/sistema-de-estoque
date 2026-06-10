@@ -7,41 +7,7 @@ import {
 import chalk from "chalk";
 import Table from 'cli-table3';
 
-let estoque = [
-    {
-    nome: "mouse gamer",
-    quantidade: 15,
-  },
-  {
-    nome: "teclado mecanico",
-    quantidade: 8,
-  },
-  {
-    nome: "monitor 24 polegadas",
-    quantidade: 4,
-  },
-  {
-    nome: "headset",
-    quantidade: 12,
-  },
-  {
-    nome: "webcam full hd",
-    quantidade: 6,
-  },
-  {
-    nome: "notebook",
-    quantidade: 3,
-  },
-  {
-    nome: "cabo hdmi",
-    quantidade: 25,
-  },
-  {
-    nome: "ssd 1tb",
-    quantidade: 10,
-  },
-
-];
+let estoque = [];
 
 
 function mostrarEstoque() {
