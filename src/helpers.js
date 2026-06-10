@@ -1,8 +1,6 @@
-function padronizarNome(nome) {
-  const nomeMinusculo = nome.trim();
-  const nomePadrao = nomeMinusculo.toLowerCase();
-  return nomePadrao;
-}
+import chalk from "chalk";
+
+const padronizarNome = (nome) => nome.trim().toLowerCase();
 
 function validarQuantidade(quantidade) {
   if (quantidade < 0) {
@@ -16,12 +14,12 @@ function validarQuantidade(quantidade) {
 
 function validarNomeProduto(nome) {
   if (nome.trim() === "") {
-    console.log("O nome do produto não pode estar vazio.");
+    console.log(chalk.red("O nome do produto não pode estar vazio."));
     return false;
   }
 
   if (!isNaN(nome[0])) {
-    console.log("O nome do produto não pode começar com número.");
+    console.log(chalk.red("O nome do produto não pode começar com número."));
     return false;
   }
 

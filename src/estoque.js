@@ -4,27 +4,28 @@ import {
   validarNomeProduto,
   validarQuantidade,
 } from "./helpers.js";
+import chalk from "chalk";
 
 let estoque = [];
 
 function mostrarEstoque() {
   if (estoque.length === 0) {
-    console.log("Estoque vazio!");
+    console.log(chalk.yellow("Estoque vazio!"));
     return;
   }
 
-  console.log("\n === ESTOQUE ===");
+  console.log(chalk.blue(" === ESTOQUE ==="));
 
   for (let i = 0; i < estoque.length; i++) {
     console.log(
-      `Nome: ${estoque[i].nome} Quantidade: ${estoque[i].quantidade}`,
+      `Produto: ${chalk.green(estoque[i].nome)} Quantidade: ${chalk.yellow(estoque[i].quantidade)}`,
     );
   }
 }
 
 function adicionarProduto(voltarMenu) {
   rl.question("\nQual produto deseja cadastrar?", (produtoNovo) => {
-    console.log("\nVocê digitou", produtoNovo);
+    console.log(chalk.green("\nVocê digitou", produtoNovo));
     const produtoPadronizado = padronizarNome(produtoNovo);
 
     const nomeValido = validarNomeProduto(produtoPadronizado);
@@ -41,19 +42,19 @@ function adicionarProduto(voltarMenu) {
       }
     }
     if (produtoExistente) {
-      console.log("Produto já cadastrado!");
+      console.log(chalk.yellow("Produto já cadastrado!"));
 
       voltarMenu();
       return;
     } else {
       rl.question(
-        "\nQual a quantidade que tem desse produto?",
+        "Qual a quantidade que tem desse produto?",
         (quantidadeNova) => {
-          console.log("\nVocê digitou:", quantidadeNova);
+          console.log(chalk.green("\nVocê digitou:", quantidadeNova));
           const quantidadeNovaNumero = Number(quantidadeNova);
 
           if (isNaN(quantidadeNovaNumero)) {
-            console.log("Erro. digite um número!");
+            console.log(chalk.red("Erro. digite um número!"));
 
             voltarMenu();
             return;
@@ -62,7 +63,7 @@ function adicionarProduto(voltarMenu) {
 
           if (!quantidadeValida) {
             console.log(
-              "Quantidade deve ser um número inteiro maior ou igual a zero.",
+              chalk.red("Quantidade deve ser um número inteiro maior ou igual a zero.")
             );
 
             voltarMenu();
@@ -76,10 +77,10 @@ function adicionarProduto(voltarMenu) {
           estoque.push(produto);
 
           console.log(
-            `Produto adicionado: ${produtoPadronizado} quantidade: ${quantidadeNovaNumero}`,
+            chalk.green(`Produto adicionado: ${chalk.yellow(produtoPadronizado)} quantidade: ${chalk.yellow(quantidadeNovaNumero)}`)
           );
 
-          console.log("\nEstoque atualizado:");
+          console.log(chalk.green("\nEstoque atualizado:"));
 
           mostrarEstoque();
 
@@ -92,7 +93,7 @@ function adicionarProduto(voltarMenu) {
 
 function removerProduto(voltarMenu) {
   if (estoque.length === 0) {
-    console.log("Estoque vazio!");
+    console.log(chalk.yellow("Estoque vazio!"));
 
     voltarMenu();
     return;
@@ -108,7 +109,7 @@ function removerProduto(voltarMenu) {
       if (estoque[i].nome === produtoPadronizado) {
         const produtoRemovido = estoque.splice(i, 1);
         encontrado = true;
-        console.log("Item", produtoRemovido[0].nome, "removido!");
+        console.log(chalk.green("Item", produtoRemovido[0].nome, "removido!"));
 
         mostrarEstoque();
 
@@ -118,7 +119,7 @@ function removerProduto(voltarMenu) {
       }
     }
     if (!encontrado) {
-      console.log("Produto não encontrado");
+      console.log(chalk.red("Produto não encontrado"));
 
       voltarMenu();
     }
@@ -127,7 +128,7 @@ function removerProduto(voltarMenu) {
 
 function atualizarProduto(voltarMenu) {
   if (estoque.length === 0) {
-    console.log("Estoque vazio!");
+    console.log(chalk.yellow("Estoque vazio!"));
 
     voltarMenu();
     return;
@@ -147,7 +148,7 @@ function atualizarProduto(voltarMenu) {
           const quantidadeNovaNumero = Number(quantidadeNova);
 
           if (isNaN(quantidadeNovaNumero)) {
-            console.log("Quantidade informada não é um número");
+            console.log(chalk.red("Quantidade informada não é um número"));
 
             voltarMenu();
             return;
@@ -157,7 +158,7 @@ function atualizarProduto(voltarMenu) {
 
           if (!quantidadeValida) {
             console.log(
-              "Quantidade deve ser um número inteiro maior ou igual a zero.",
+              chalk.red("Quantidade deve ser um número inteiro maior ou igual a zero.")
             );
 
             voltarMenu();
@@ -166,11 +167,11 @@ function atualizarProduto(voltarMenu) {
           estoque[i].quantidade = quantidadeNovaNumero;
 
           console.log(
-            "Item:",
+            chalk.green("Item:",
             estoque[i].nome,
             "alterado para a quantidade:",
             estoque[i].quantidade,
-            "com sucesso!",
+            "com sucesso!",)
           );
 
           mostrarEstoque();
@@ -180,7 +181,7 @@ function atualizarProduto(voltarMenu) {
       }
     }
     if (!encontrado) {
-      console.log("Produto não encontrado");
+      console.log(chalk.red("Produto não encontrado"));
 
       voltarMenu();
     }
